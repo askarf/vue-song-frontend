@@ -65,6 +65,13 @@ export default {
           console.log("songs update error", error.response);
         });
     },
+    destroySong: function (song) {
+      axios.delete("http://localhost:5000/songs/" + song.id + ".json").then((response) => {
+        console.log("songs destroy", response);
+        var index = this.songs.indexOf(song);
+        this.songs.splice(index, 1);
+      });
+    },
   },
 };
 </script>
@@ -111,6 +118,7 @@ export default {
           <input type="text" v-model="editSongParams.duration" />
         </p>
         <button v-on:click="updateSong(currentSong)">Update</button>
+        <button v-on:click="destroySong(currentSong)">Delete Song</button>
         <button>Close</button>
       </form>
     </dialog>
