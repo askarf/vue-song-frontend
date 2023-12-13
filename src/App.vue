@@ -5,6 +5,8 @@ export default {
     return {
       songs: [],
       newSongParams: {},
+      currentSong: {},
+      editSongParams: {},
     };
   },
   created: function () {
@@ -38,6 +40,31 @@ export default {
           console.log("songs create error", error.response);
         });
     },
+    showSong: function (song) {
+      this.currentSong = song;
+      this.editSongParams = song;
+      document.querySelector("#song-details").showModal();
+    },
+    updateSong: function (song) {
+      const formData = new FormData();
+      formData.append("title", this.editSongParams.title);
+      formData.append("artist", this.editSongParams.artist);
+      formData.append("album", this.editSongParams.album);
+      formData.append("duration", this.editSongParams.duration);
+      axios
+        .patch("http://localhost:5000/songs/" + song.id + ".json", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log("songs update", response);
+          this.currentSong = {};
+        })
+        .catch((error) => {
+          console.log("songs update error", error.response);
+        });
+    },
   },
 };
 </script>
@@ -62,7 +89,31 @@ export default {
       <p>Artist: {{ song.artist }}</p>
       <p>Album: {{ song.album }}</p>
       <p>Duration: {{ song.duration }}</p>
+      <button v-on:click="showSong(song)">More info</button>
     </div>
+    <dialog id="song-details">
+      <form method="dialog">
+        <h1>Song info</h1>
+        <p>
+          Title:
+          <input type="text" v-model="editSongParams.title" />
+        </p>
+        <p>
+          Artist:
+          <input type="text" v-model="editSongParams.artist" />
+        </p>
+        <p>
+          Album:
+          <input type="text" v-model="editSongParams.album" />
+        </p>
+        <p>
+          Duration:
+          <input type="text" v-model="editSongParams.duration" />
+        </p>
+        <button v-on:click="updateSong(currentSong)">Update</button>
+        <button>Close</button>
+      </form>
+    </dialog>
   </div>
 </template>
 
