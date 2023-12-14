@@ -22,7 +22,7 @@ export default {
     createSong: function () {
       const formData = new FormData();
       formData.append("title", this.newSongParams.title);
-      formData.append("artist", this.newSongParams.artist);
+      formData.append("artist_id", this.newSongParams.artist_id);
       formData.append("album", this.newSongParams.album);
       formData.append("duration", this.newSongParams.duration);
       axios
@@ -83,7 +83,7 @@ export default {
       Title:
       <input type="text" v-model="newSongParams.title" />
       Artist:
-      <input type="text" v-model="newSongParams.artist" />
+      <input type="text" v-model="newSongParams.artist_id" />
       Album:
       <input type="text" v-model="newSongParams.album" />
       Duration:
@@ -93,7 +93,7 @@ export default {
     <h1>All Songs</h1>
     <div v-for="song in songs" v-bind:key="song.id">
       <h2>{{ song.title }}</h2>
-      <p>Artist: {{ song.artist }}</p>
+      <p>Artist: {{ song.artist_name }}</p>
       <p>Album: {{ song.album }}</p>
       <p>Duration: {{ song.duration }}</p>
       <button v-on:click="showSong(song)">More info</button>
