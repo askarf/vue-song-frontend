@@ -4,6 +4,7 @@ export default {
   data: function () {
     return {
       songs: [],
+      artists: [],
       newSongParams: {},
       currentSong: {},
       editSongParams: {},
@@ -11,12 +12,19 @@ export default {
   },
   created: function () {
     this.indexSongs();
+    this.indexArtists();
   },
   methods: {
     indexSongs: function () {
       axios.get("http://localhost:5000/songs.json").then((response) => {
         console.log("songs index", response);
         this.songs = response.data;
+      });
+    },
+    indexArtists: function () {
+      axios.get("http://localhost:5000/artists.json").then((response) => {
+        console.log("artists index", response);
+        this.artists = response.data;
       });
     },
     createSong: function () {
@@ -97,6 +105,11 @@ export default {
       <p>Album: {{ song.album }}</p>
       <p>Duration: {{ song.duration }}</p>
       <button v-on:click="showSong(song)">More info</button>
+    </div>
+    <h1>All Artists</h1>
+    <div v-for="artist in artists" v-bind:key="artist.id">
+      <h2>{{ artist.name }}</h2>
+      <p>Bio {{ artist.bio }}</p>
     </div>
     <dialog id="song-details">
       <form method="dialog">
