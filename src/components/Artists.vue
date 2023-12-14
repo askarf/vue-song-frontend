@@ -105,6 +105,7 @@ export default {
     <div v-for="artist in artists" v-bind:key="artist.id">
       <h2>{{ artist.name }}</h2>
       <p>Bio {{ artist.bio }}</p>
+      <p>Songs: {{ artist.songslist }}</p>
       <button v-on:click="showArtist(artist)">More info</button>
     </div>
   </div>
